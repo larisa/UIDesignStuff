@@ -14,10 +14,33 @@
     <script type="text/javascript" src="jquery/js/jquery-ui-1.8.17.custom.min.js"></script>
     <script type="text/javascript" src="dicts.json"></script>
     <script type="text/javascript" src="translate_game.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Glass+Antiqua' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Gudea' rel='stylesheet' type='text/css'>
+
+		<link href='http://fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css'>
+
+		<link href='http://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Raleway:100' rel='stylesheet' type='text/css'>
+
+		<link href='http://fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'>
+
+
+		<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+		<link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Doppio+One' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Ruluko' rel='stylesheet' type='text/css'>
 
   </head>
   <body>
-    <!-- Your HTML here -->
+<!--Title-->
+<div id="Title">Translate from Spanish to English</div>
+<!--Heading: 3 divs: desiredLang, transLang, Checker   -->		
+<div id="desiredLang" class="ColumnHeading">Spanish</div>
+<div id="transLang" class="ColumnHeading">English</div>
+<div id="checker" class="ColumnHeading">Answer</div>
+
 
   </body>
 </html>

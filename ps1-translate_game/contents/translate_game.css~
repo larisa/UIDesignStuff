@@ -2,4 +2,43 @@ html {
     background-color: #eee;
 }
 
-/* Your CSS here */
+body {
+		background-color: #faeff6;
+}
+
+@font-face {
+    font-family: 'LeagueGothicRegular';
+    src: url('league_gothic-webfont.eot');
+    src: url('league_gothic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('league_gothic-webfont.woff') format('woff'),
+         url('league_gothic-webfont.ttf') format('truetype'),
+         url('league_gothic-webfont.svg#LeagueGothicRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#Title{
+		padding-bottom: 15px;
+		font-family: 'Raleway', cursive;
+		font-size: 40pt;
+		font-weight: 900;
+		color: #ee008c;
+		text-align: left;
+
+/*		text-shadow: #D9D9D9 2px 2px 0px;*/
+}
+		
+.ColumnHeading{
+		text-align: left;
+		display: inline;
+		padding-right: 20px;
+		padding-bottom: 10px;
+		font-family: 'Voltaire', sans-serif;
+		font-size: 25pt;
+		color: #666666;
+}
+
+
+/*font-family: 'Ruluko', sans-serif;
+font-family: 'Doppio One', sans-serif;
+*/
