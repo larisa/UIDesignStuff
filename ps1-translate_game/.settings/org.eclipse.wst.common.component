@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="ps1-translate_game">
+        <wb-resource deploy-path="/" source-path="/ps1-translate_game"/>
+        <property name="context-root" value="ps1-translate_game"/>
+    </wb-module>
+</project-modules>
