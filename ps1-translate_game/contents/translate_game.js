@@ -32,6 +32,11 @@ $(function() {
 				return false;
 		});
 
+		//filter autocomplete list
+		$("#userDataInput").autocomplete({
+				source:["yafim", "larisa", "lana", "yazz"]
+		});
+
     });
 
 
