@@ -27,12 +27,16 @@ body {
 		display: table-row;
 }
 
-#fromLangLabel, #toLangLabel, #ansLabel{
+#headingRow div{
 		display: table-cell;
 }
 
 #activeRow{
 		display: table-row;
+}
+
+#activeRow div{
+		display: table-cell;
 }
 
 
@@ -41,20 +45,12 @@ body {
 		display: table-cell;
 }
 
-#entriesLog{
-		display: table;
-}
 
 .correctRow{
 		display: table-row;
 }
 
-
-.correctLangFrom, .correctLangTo, .correctCheck{
-		display: table-cell;
-}
-
-#a, #b, #f{
+.correctRow div{
 		display: table-cell;
 }
 
@@ -64,13 +60,10 @@ body {
 }
 
 
-.wrongLangFrom, .wrongLangTo, .actualTo{
+.wrongRow div{
 		display: table-cell;
 }
 
-#c, #d, #e{
-		display: table-cell;
-}
 
 
 .ColumnHeading{

@@ -48,7 +48,8 @@ function prepareNextWord(prompt, guess, answer){
 											 text: answer})));
 				out.append(($("<div/>",
 											{"class": "correctCheck"}).html("&#10003;")));
-				$('#entriesLog').prepend(out);
+				out.insertBefore($('.row')[0]);
+
 				return true;
 		}
 		console.log("WRONG");
@@ -63,7 +64,7 @@ function prepareNextWord(prompt, guess, answer){
 								{"class": "actualTo",
 								 text: answer})));
 
-		$('#entriesLog').prepend(out);
+		out.insertBefore($('.row')[0]);
 		return false;
 }
 				

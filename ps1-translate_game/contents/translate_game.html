@@ -26,32 +26,35 @@
 <div id="title">Translate from <span class="fromLang">Spanish</span> to <span 
 class="toLang">English</span></div>
 
+		<form id="userGuess">
 <div id="content">
 		<div id="headingRow">
 			<div id="fromLangLabel" class="ColumnHeading fromLang">[ERROR_FROM]</div>
 			<div id="toLangLabel" class="ColumnHeading toLang">[ERROR_TO]</div>
 			<div id="ansLabel" class="ColumnHeading">Answer</div>
 		</div>
+
 		<div id="activeRow">
-			<div id="fromLangPrompt" class="PromptWord">[ERROR_PROMPT]</div>
-				<form id="userGuess" >
-					<input type="text" name="userInput" />
-					<input type="submit" value="See Answer" />
-				</form>
-		</div>
-		<div id="entriesLog">
-			<div class="correctRow">
-				<div id="a" class="correctLangFrom">calabaza</div>
-				<div id="b" class="correctLangTo">pumpkin</div>
-				<div id="f" class="correctCheck">&#10003;</div>
-			</div>
-			<div class="wrongRow">
-				<div id="c" class="wrongLangFrom">postmodernidad</div>
-				<div id="d" class="wrongLangTo">phone</div>
-				<div id="e" class="actualTo">postmodernism</div>
-			</div>
+				<div id="fromLangPrompt" class="PromptWord">[ERROR_PROMPT]</div>
+				<div id="textField" class="inputTextField"><input type="text" name="userInput" /></div>
+				<div id="button" class="answerButton"><input type="submit" value="See Answer" /></div>
 		</div>
 
+
+			<div class="row correctRow">
+				<div class="correctLangFrom">calabaza</div>
+				<div class="correctLangTo">pumpkin</div>
+				<div class="correctCheck">&#10003;</div>
+			</div>
+			<div class="row wrongRow">
+				<div class="wrongLangFrom">postmodernidad</div>
+				<div class="wrongLangTo">phone</div>
+				<div class="actualTo">postmodernism</div>
+			</div>
+
+
 </div>
+			</form>
+
   </body>
 </html>
