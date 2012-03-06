@@ -29,14 +29,14 @@ body {
 }
 
 #content {
-		display: table;
+		display: table;g
 }
 
 #headingRow{
 		display: table-row;
 }
 
-#desiredLangLabel, #transLangLabel, #ansLabel{
+#fromLangLabel, #toLangLabel, #ansLabel{
 		display: table-cell;
 }
 
