@@ -15,14 +15,16 @@ $(function() {
 		$('.PromptWord').text(randomFromWord);
 
 		//get user's input
-		
-		var guess = $("#toLangInput").attr("name");
-		console.log(guess);
+		$('#userGuess').submit(function(){
+				console.log("form has submitted!");
+				var guess = $("input[name=userInput]").val();
+				console.log(guess);
+				return false;
+		});
 
-		console.log(lang_to);
-		console.log(lang_from);
-		console.log(current_dict);
     });
+
+
 
 //get a random element
 function pickRandomProperty(obj) {

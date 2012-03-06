@@ -14,23 +14,10 @@
     <script type="text/javascript" src="jquery/js/jquery-ui-1.8.17.custom.min.js"></script>
     <script type="text/javascript" src="dicts.json"></script>
     <script type="text/javascript" src="translate_game.js"></script>
-		<link href='http://fonts.googleapis.com/css?family=Glass+Antiqua' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Gudea' rel='stylesheet' type='text/css'>
 
-		<link href='http://fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css'>
-
-		<link href='http://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Raleway:100' rel='stylesheet' type='text/css'>
 
-		<link href='http://fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'>
 
-
-		<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-
-		<link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Doppio+One' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Ruluko' rel='stylesheet' type='text/css'>
 
   </head>
   <body>
@@ -40,7 +27,6 @@
 class="toLang">English</span></div>
 
 <div id="content">
-	<!--Heading: 3 divs: desiredLang, transLang, Checker   -->		
 		<div id="headingRow">
 			<div id="fromLangLabel" class="ColumnHeading fromLang">[ERROR_FROM]</div>
 			<div id="toLangLabel" class="ColumnHeading toLang">[ERROR_TO]</div>
@@ -48,9 +34,10 @@ class="toLang">English</span></div>
 		</div>
 		<div id="activeRow">
 			<div id="fromLangPrompt" class="PromptWord">[ERROR_PROMPT]</div>
-			<div id="toLangInput"> <input type = "text" name="transGuess" /></div>
-			<div id="seeAnswer"> <input type="submit" value="See Answer"/></div>
-		</div>
+				<form id="userGuess" >
+					<input type="text" name="userInput" />
+					<input type="submit" value="See Answer" />
+				</form>
 		
 </div>
   </body>
