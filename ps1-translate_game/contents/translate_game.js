@@ -48,25 +48,22 @@ function prepareNextWord(prompt, guess, answer){
 											 text: answer})));
 				console.log($('#entriesLog'));
 				$('#entriesLog').prepend(out);
-
-				console.log(out);
-
-//				$('.correctLangFrom').append(prompt);
-	//			$('.correctLangTo').append(answer);
 				return true;
 		}
-		else{
-				console.log("WRONG!");
-				
-				$('.wrongLangFrom').prepend(prompt);
-				$('.wrongLangTo').prepend(guess);
-				$('.actualTo').append(answer);
+		console.log("WRONG");
+		var out = $("<div/>", {"class": "wrongRow"});
+		out.append(($("<div/>", 
+									{"class": "wrongLangFrom",
+									 text: prompt})));
+		out.append(($("<div/>", 
+									{"class": "wrongLangTo",
+									 text: guess})));
+		out.append(($("<div/>",
+								{"class": "actualTo",
+								 text: answer})));
 
-//				$(prompt.appendTo('wrongLangFrom'));
-				return false;
-		}
-		
-
+		$('#entriesLog').prepend(out);
+		return false;
 }
 				
 

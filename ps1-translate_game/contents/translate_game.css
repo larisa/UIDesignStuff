@@ -61,7 +61,7 @@ body {
 
 
 .wrongLangFrom, .wrongLangTo, .actualTo{
-		display: table-column;
+		display: table-cell;
 }
 
 .ColumnHeading{
