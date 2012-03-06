@@ -29,6 +29,7 @@ body {
 
 #headingRow div{
 		display: table-cell;
+		padding-right: 20px;
 }
 
 #activeRow{
@@ -37,12 +38,14 @@ body {
 
 #activeRow div{
 		display: table-cell;
+		padding-right: 20px;
 }
 
 
 
 #fromLangPrompt{
 		display: table-cell;
+		padding-right: 20px;
 }
 
 
@@ -52,6 +55,7 @@ body {
 
 .correctRow div{
 		display: table-cell;
+		padding-right: 20px;
 }
 
 
@@ -62,6 +66,7 @@ body {
 
 .wrongRow div{
 		display: table-cell;
+		padding-right: 20px;
 }
 
 
