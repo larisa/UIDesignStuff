@@ -50,7 +50,11 @@ body {
 }
 
 
-.correctLangFrom, .correctLangTo{
+.correctLangFrom, .correctLangTo, .correctCheck{
+		display: table-cell;
+}
+
+#a, #b, #f{
 		display: table-cell;
 }
 
@@ -63,6 +67,11 @@ body {
 .wrongLangFrom, .wrongLangTo, .actualTo{
 		display: table-cell;
 }
+
+#c, #d, #e{
+		display: table-cell;
+}
+
 
 .ColumnHeading{
 		text-align: left;
