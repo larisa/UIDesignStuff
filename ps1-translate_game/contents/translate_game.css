@@ -39,7 +39,7 @@ body {
 		display: table-cell;
 }
 
-#correctRow{
+.correctRow{
 		display: table-row;
 }
 
@@ -48,7 +48,7 @@ body {
 		display: table-cell;
 }
 
-#wrongRow{
+.wrongRow{
 		display: table-row;
 }
 

@@ -26,7 +26,6 @@ $(function() {
 
 		//get user's input
 		$('#userGuess').submit(function(){
-				console.log("form has submitted!");
 				var guess = $("input[name=userInput]").val();
 				console.log("YOU GUESSED " + guess);
 				prepareNextWord(randomFromWord, guess, randomToWord);
@@ -40,15 +39,30 @@ $(function() {
 function prepareNextWord(prompt, guess, answer){
 		if (guess==answer){
 				console.log("CORRECT!");
-				$('.correctLangFrom').append(prompt);
-				$('.correctLangTo').append(answer);
+				$('.correctLangFrom').prepend(
+						($("<div/>", { 
+				"class": "correctLangFrom",
+				text: prompt
+						})));
+
+				$('.correctLangTo').prepend(
+						($("<div/>", { 
+				"class": "correctLangTo",
+				text: answer
+						})));
+
+//				$('.correctLangFrom').append(prompt);
+	//			$('.correctLangTo').append(answer);
 				return true;
 		}
 		else{
 				console.log("WRONG!");
-				$('.wrongLangFrom').append(prompt);
-				$('.wrongLangTo').append(guess);
+				
+				$('.wrongLangFrom').prepend(prompt);
+				$('.wrongLangTo').prepend(guess);
 				$('.actualTo').append(answer);
+
+//				$(prompt.appendTo('wrongLangFrom'));
 				return false;
 		}
 		
