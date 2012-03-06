@@ -20,7 +20,7 @@ body {
 }
 
 #content {
-		display: table;g
+		display: table;
 }
 
 #headingRow{
@@ -36,6 +36,23 @@ body {
 }
 
 #fromLangPrompt{
+		display: table-cell;
+}
+
+#correctRow{
+		display: table-row;
+}
+
+
+#a, #b{
+		display: table-cell;
+}
+
+#wrongRow{
+		display: table-row;
+}
+
+#c, #d, #e{
 		display: table-cell;
 }
 
@@ -61,6 +78,55 @@ body {
 		color: black;
 }		
 
+.correctLangFrom{
+		text-align: left;
+		display: inline;
+		padding-right: 20px;
+		padding-bottom: 10px;
+		font-family: 'Helvetica', normal;
+		font-size: 25pt;
+		color: blue;
+}		
+
+
+.correctLangTo{
+		text-align: left;
+		display: inline;
+		padding-right: 20px;
+		padding-bottom: 10px;
+		font-family: 'Helvetica', normal;
+		font-size: 25pt;
+		color: blue;
+}		
+.wrongLangFrom{
+		text-align: left;
+		display: inline;
+		padding-right: 20px;
+		padding-bottom: 10px;
+		font-family: 'Helvetica', normal;
+		font-size: 25pt;
+		color: red;
+}		
+
+.wrongLangTo{
+		text-align: left;
+		display: inline;
+		padding-right: 20px;
+		padding-bottom: 10px;
+		font-family: 'Helvetica', normal;
+		font-size: 25pt;
+		color: red;
+		text-decoration: line-through;
+}		
+.actualTo{
+		text-align: left;
+		display: inline;
+		padding-right: 20px;
+		padding-bottom: 10px;
+		font-family: 'Helvetica', normal;
+		font-size: 25pt;
+		color: red;
+}		
 
 /*font-family: 'Ruluko', sans-serif;
 font-family: 'Doppio One', sans-serif;
