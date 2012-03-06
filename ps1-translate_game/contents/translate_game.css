@@ -40,6 +40,14 @@ body {
 		display: table-cell;
 }
 
+#activeRow{
+		display: table-row;
+}
+
+#fromLangPrompt, #toLangInput, #seeAnswer{
+		display: table-cell;
+}
+
 .ColumnHeading{
 		text-align: left;
 		display: inline;
@@ -50,6 +58,17 @@ body {
 		font-size: 25pt;
 		color: #666666;
 }
+
+.PromptWord{
+		text-align: left;
+		display: inline;
+		padding-right: 20px;
+		padding-bottom: 10px;
+		font-family: 'Helvetica', normal;
+		font-weight: 550;
+		font-size: 25pt;
+		color: black;
+}		
 
 
 /*font-family: 'Ruluko', sans-serif;
