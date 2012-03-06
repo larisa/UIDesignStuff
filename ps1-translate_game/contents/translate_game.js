@@ -46,7 +46,8 @@ function prepareNextWord(prompt, guess, answer){
 				out.append(($("<div/>", 
 											{"class": "correctLangTo",
 											 text: answer})));
-				console.log($('#entriesLog'));
+				out.append(($("<div/>",
+											{"class": "correctCheck"}).html("&#10003;")));
 				$('#entriesLog').prepend(out);
 				return true;
 		}
