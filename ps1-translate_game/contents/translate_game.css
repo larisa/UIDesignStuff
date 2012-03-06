@@ -35,8 +35,14 @@ body {
 		display: table-row;
 }
 
+
+
 #fromLangPrompt{
 		display: table-cell;
+}
+
+#entriesLog{
+		display: table;
 }
 
 .correctRow{
@@ -44,16 +50,18 @@ body {
 }
 
 
-#a, #b{
+.correctLangFrom, .correctLangTo{
 		display: table-cell;
 }
+
 
 .wrongRow{
 		display: table-row;
 }
 
-#c, #d, #e{
-		display: table-cell;
+
+.wrongLangFrom, .wrongLangTo, .actualTo{
+		display: table-column;
 }
 
 .ColumnHeading{

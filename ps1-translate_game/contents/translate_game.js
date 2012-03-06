@@ -39,17 +39,17 @@ $(function() {
 function prepareNextWord(prompt, guess, answer){
 		if (guess==answer){
 				console.log("CORRECT!");
-				$('.correctLangFrom').prepend(
-						($("<div/>", { 
-				"class": "correctLangFrom",
-				text: prompt
-						})));
+				var out = $("<div/>", {"class": "correctRow"});
+				out.append(($("<div/>", 
+											{"class": "correctLangFrom",
+											 text: prompt})));
+				out.append(($("<div/>", 
+											{"class": "correctLangTo",
+											 text: answer})));
+				console.log($('#entriesLog'));
+				$('#entriesLog').prepend(out);
 
-				$('.correctLangTo').prepend(
-						($("<div/>", { 
-				"class": "correctLangTo",
-				text: answer
-						})));
+				console.log(out);
 
 //				$('.correctLangFrom').append(prompt);
 	//			$('.correctLangTo').append(answer);
