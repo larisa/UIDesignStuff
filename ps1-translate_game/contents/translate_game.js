@@ -17,13 +17,11 @@ $(function() {
 		$('.toLang').text(lang_to);
 		$('.fromLang').text(lang_from);
 		
-		var randomToWord = pickRandomProperty(current_dict);
-		allToWords.push(randomToWord);
-		var randomFromWord = current_dict[randomToWord]; 
-		allFromWords.push(randomFromWord);
 		
+		var randomToWord = setupWords();
+
 		//display Prompt and focus text field
-		$('.PromptWord').text(randomFromWord);
+//		$('.PromptWord').text(randomFromWord);
 	//	$("#textField").userDataInput.focus();
 
 
@@ -86,6 +84,16 @@ function processGuess(prompt, guess, answer){
 
 		out.insertBefore($('.row')[0]);
 		return false;
+
+		function setupWords(){
+				//pick a random word
+				var randomToWord = pickRandomProperty(current_dict);
+				allToWords.push(randomToWord);
+				var randomFromWord = current_dict[randomToWord]; 
+				allFromWords.push(randomFromWord);
+				$('.PromptWord').text(randomFromWord);
+		}
+
 }
 
 //prompt for another word, clear the input				
@@ -93,6 +101,9 @@ function prepareNextWord(){
 		$("#userDataInput").val('');
 		return;
 }
+
+
+
 
 //get a random element
 function pickRandomProperty(obj) {
