@@ -7,18 +7,31 @@ var allToWords = new Array();
 
 
 $(function() {
+		
 		var lang_to		= "English";
 		var lang_from		= "Spanish";
 		var current_dict	= dicts[lang_to][lang_from]; // keys: words in @lang_to, values: corresponding words in @lang_from 	
 
 		var autocompleteEnglish = getKeys(current_dict);
+		var randomToWord, randomFromWord;
+
+		var setupWords = function(){
+				//pick a random word
+				randomToWord = pickRandomProperty(current_dict);
+				allToWords.push(randomToWord);
+				randomFromWord = current_dict[randomToWord]; 
+				allFromWords.push(randomFromWord);
+				$('.PromptWord').text(randomFromWord);
+		}
+
+
 
 		//supply the To and From Languages
 		$('.toLang').text(lang_to);
 		$('.fromLang').text(lang_from);
 		
 		
-		var randomToWord = setupWords();
+		setupWords();
 
 		//display Prompt and focus text field
 //		$('.PromptWord').text(randomFromWord);
@@ -32,6 +45,7 @@ $(function() {
 				console.log("YOU GUESSED " + guess);
 				processGuess(randomFromWord, guess, randomToWord);
 				prepareNextWord();
+				setupWords();
 
 				return false;
 		});
@@ -42,14 +56,7 @@ $(function() {
 
 		});
 
-		var setupWords = function(){
-				//pick a random word
-				var randomToWord = pickRandomProperty(current_dict);
-				allToWords.push(randomToWord);
-				var randomFromWord = current_dict[randomToWord]; 
-				allFromWords.push(randomFromWord);
-				$('.PromptWord').text(randomFromWord);
-		}
+		
 
 
 
@@ -68,7 +75,7 @@ function getKeys(dict){
 function processGuess(prompt, guess, answer){
 		if (guess==answer){
 				console.log("CORRECT!");
-				var out = $("<div/>", {"class": "correctRow"});
+				var out = $("<div/>", {"class": "row correctRow"});
 				out.append(($("<div/>", 
 											{"class": "correctLangFrom",
 											 text: prompt})));
@@ -82,7 +89,7 @@ function processGuess(prompt, guess, answer){
 				return true;
 		}
 		console.log("WRONG");
-		var out = $("<div/>", {"class": "wrongRow"});
+		var out = $("<div/>", {"class": "row wrongRow"});
 		out.append(($("<div/>", 
 									{"class": "wrongLangFrom",
 									 text: prompt})));
@@ -96,10 +103,9 @@ function processGuess(prompt, guess, answer){
 		out.insertBefore($('.row')[0]);
 		return false;
 
-
 }
 
-//prompt for another word, clear the input				
+//clear the input				
 function prepareNextWord(){
 		$("#userDataInput").val('');
 		return;
