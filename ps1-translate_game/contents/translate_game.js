@@ -85,7 +85,7 @@ function processGuess(prompt, guess, answer){
 		out.insertBefore($('.row')[0]);
 		return false;
 
-		function setupWords(){
+		$(setupWords(){
 				//pick a random word
 				var randomToWord = pickRandomProperty(current_dict);
 				allToWords.push(randomToWord);
