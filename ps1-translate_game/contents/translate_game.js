@@ -90,8 +90,7 @@ function processGuess(prompt, guess, answer){
 
 //prompt for another word, clear the input				
 function prepareNextWord(){
-		$("#textField").userDataInput.text('');
-		console.log("we're clearing the form");
+		$("#userDataInput").val('');
 		return;
 }
 
