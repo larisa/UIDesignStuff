@@ -17,21 +17,24 @@ $(function() {
 		$('.toLang').text(lang_to);
 		$('.fromLang').text(lang_from);
 		
-		console.log(current_dict);
 		var randomToWord = pickRandomProperty(current_dict);
 		allToWords.push(randomToWord);
 		var randomFromWord = current_dict[randomToWord]; 
 		allFromWords.push(randomFromWord);
 		
-		//display Prompt
+		//display Prompt and focus text field
 		$('.PromptWord').text(randomFromWord);
+	//	$("#textField").userDataInput.focus();
+
 
 		//get user's input
-		$('#userGuess').submit(function(){
+		$('#userGuess').submit(function(e){
+				e.preventDefault();
 				var guess = $("input[name=userInput]").val();
 				console.log("YOU GUESSED " + guess);
 				processGuess(randomFromWord, guess, randomToWord);
 				prepareNextWord();
+
 				return false;
 		});
 
