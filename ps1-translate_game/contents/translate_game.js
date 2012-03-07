@@ -12,7 +12,6 @@ $(function() {
 		var current_dict	= dicts[lang_to][lang_from]; // keys: words in @lang_to, values: corresponding words in @lang_from 	
 
 		var autocompleteEnglish = getKeys(current_dict);
-		console.log(autocompleteEnglish);
 
 		//supply the To and From Languages
 		$('.toLang').text(lang_to);
@@ -31,7 +30,8 @@ $(function() {
 		$('#userGuess').submit(function(){
 				var guess = $("input[name=userInput]").val();
 				console.log("YOU GUESSED " + guess);
-				prepareNextWord(randomFromWord, guess, randomToWord);
+				processGuess(randomFromWord, guess, randomToWord);
+				prepareNextWord();
 				return false;
 		});
 
@@ -52,8 +52,8 @@ function getKeys(dict){
 		
 }
 
-//prompt for another word, clear the input
-function prepareNextWord(prompt, guess, answer){
+
+function processGuess(prompt, guess, answer){
 		if (guess==answer){
 				console.log("CORRECT!");
 				var out = $("<div/>", {"class": "correctRow"});
@@ -84,8 +84,13 @@ function prepareNextWord(prompt, guess, answer){
 		out.insertBefore($('.row')[0]);
 		return false;
 }
-				
 
+//prompt for another word, clear the input				
+function prepareNextWord(){
+		$("#textField").userDataInput.text('');
+		console.log("we're clearing the form");
+		return;
+}
 
 //get a random element
 function pickRandomProperty(obj) {
