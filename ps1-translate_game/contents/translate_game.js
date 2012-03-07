@@ -42,6 +42,17 @@ $(function() {
 
 		});
 
+		var setupWords = function(){
+				//pick a random word
+				var randomToWord = pickRandomProperty(current_dict);
+				allToWords.push(randomToWord);
+				var randomFromWord = current_dict[randomToWord]; 
+				allFromWords.push(randomFromWord);
+				$('.PromptWord').text(randomFromWord);
+		}
+
+
+
     });
 
 function getKeys(dict){
@@ -85,14 +96,6 @@ function processGuess(prompt, guess, answer){
 		out.insertBefore($('.row')[0]);
 		return false;
 
-		$(setupWords(){
-				//pick a random word
-				var randomToWord = pickRandomProperty(current_dict);
-				allToWords.push(randomToWord);
-				var randomFromWord = current_dict[randomToWord]; 
-				allFromWords.push(randomFromWord);
-				$('.PromptWord').text(randomFromWord);
-		}
 
 }
 
