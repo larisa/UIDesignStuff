@@ -15,6 +15,7 @@ $(function() {
 		var autocompleteEnglish = getKeys(current_dict);
 		var randomToWord, randomFromWord;
 
+		//sets randomToWord & randomFromWord & updates prompt in html
 		var setupWords = function(){
 				//pick a random word
 				randomToWord = pickRandomProperty(current_dict);
@@ -30,12 +31,10 @@ $(function() {
 		$('.toLang').text(lang_to);
 		$('.fromLang').text(lang_from);
 		
-		
+		//display prompt update words, focus text field
 		setupWords();
+		$("#userDataInput").focus();
 
-		//display Prompt and focus text field
-//		$('.PromptWord').text(randomFromWord);
-	//	$("#textField").userDataInput.focus();
 
 
 		//get user's input
