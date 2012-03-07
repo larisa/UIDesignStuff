@@ -35,24 +35,25 @@ $(function() {
 		setupWords();
 		$("#userDataInput").focus();
 
-
-
-		//get user's input
-		$('#userGuess').submit(function(e){
+		var handleSubmit = function(e){
 				e.preventDefault();
 				var guess = $("input[name=userInput]").val();
 				console.log("YOU GUESSED " + guess);
 				processGuess(randomFromWord, guess, randomToWord);
 				prepareNextWord();
 				setupWords();
-
 				return false;
-		});
+		}
+
+		//get user's input
+		$('#userGuess').submit(handleSubmit);
+				
+		
 
 		//filter autocomplete list
-		$("#userDataInput").autocomplete({
-				source:autocompleteEnglish
-
+		$("#userDataInput").autocomplete({ 
+				minLength:2,
+				source:autocompleteEnglish,
 		});
 
 		
