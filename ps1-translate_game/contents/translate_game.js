@@ -11,11 +11,14 @@ $(function() {
 		var lang_from		= "Spanish";
 		var current_dict	= dicts[lang_to][lang_from]; // keys: words in @lang_to, values: corresponding words in @lang_from 	
 
+		var autocompleteEnglish = getKeys(current_dict);
+		console.log(autocompleteEnglish);
+
 		//supply the To and From Languages
 		$('.toLang').text(lang_to);
 		$('.fromLang').text(lang_from);
 		
-
+		console.log(current_dict);
 		var randomToWord = pickRandomProperty(current_dict);
 		allToWords.push(randomToWord);
 		var randomFromWord = current_dict[randomToWord]; 
@@ -34,11 +37,20 @@ $(function() {
 
 		//filter autocomplete list
 		$("#userDataInput").autocomplete({
-				source:["yafim", "larisa", "lana", "yazz"]
+				source:autocompleteEnglish
+
 		});
 
     });
 
+function getKeys(dict){
+		var allKeys = new Array();
+		for (var key in dict){
+				allKeys.push(key);
+		}
+		return allKeys;
+		
+}
 
 //prompt for another word, clear the input
 function prepareNextWord(prompt, guess, answer){
