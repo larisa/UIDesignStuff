@@ -35,13 +35,16 @@ $(function() {
 		setupWords();
 		$("#userDataInput").focus();
 
-		var handleSubmit = function(e){
+		var handleSubmit = function(e, ui){
 				e.preventDefault();
 				var guess = $("input[name=userInput]").val();
-				console.log("YOU GUESSED " + guess);
+				if(ui){
+						guess = ui.item.value;
+				}
 				processGuess(randomFromWord, guess, randomToWord);
 				prepareNextWord();
 				setupWords();
+				$("#userDataInput").autocomplete("close");
 				return false;
 		}
 
@@ -54,11 +57,8 @@ $(function() {
 		$("#userDataInput").autocomplete({ 
 				minLength:2,
 				source:autocompleteEnglish,
+				select:handleSubmit
 		});
-
-		
-
-
 
     });
 
