@@ -118,8 +118,8 @@ var canvas = document.getElementById("canvasBoard");
 if (canvas && canvas.getContext){
 		var context = canvas.getContext("2d");
 		if (context) {
-		context.fillStyle = "gray";
-		context.fillRect(0, 0, 150, 100);
+		  context.fillStyle = "gray";
+			context.fillRect(0, 0, 150, 100);
 		}
 }
 
@@ -138,9 +138,8 @@ if (canvas && canvas.getContext){
         <td id="navigation">
           <table>
 			  <tr><td>		
-						<canvas id="canvasBoard" width="400" height="400" >
-						</canvas>
-							<div id="whiteSquare" width:500px; height:100px border:1px solid #F00; </div>
+				<!-- Your code here -->
+
 
 		</td></tr>
               <tr><td><input id="btnNewGame" type="button" name="new" value="New Game"/></td></tr>
@@ -150,8 +149,8 @@ if (canvas && canvas.getContext){
         </td>
 
         <td id="content">
-			
-				<!-- Your code here -->
+						<canvas id="canvasBoard" width="400" height="400" >
+						</canvas>
             
         </td>
     </tr>
