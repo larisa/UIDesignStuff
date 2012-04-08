@@ -19,6 +19,10 @@
 <script type="text/javascript" src="boardEvent.js"></script>
 <script type="text/javascript" src="board.js"></script>
 <script type="text/javascript" src="rules.js"></script>
+<script type="text/javascript" src="draw.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+
+
 
 <script type="text/javascript">
 
@@ -161,6 +165,7 @@ function draw_checkerboard(){
 //draw board's entire current state 
 //assign id to each checker image. 
 function draw_all_pieces(){
+		console.log("in draw_all_pieces");
 		 var canvas = document.getElementById("canvasBoard");
 
 		 if (canvas && canvas.getContext){
@@ -170,19 +175,8 @@ function draw_all_pieces(){
 						 var allCurrCheckers = board.getAllCheckers();
 						 for (var i=0; i<allCurrCheckers.length; i++){
 								 var currChecker = allCurrCheckers[i];
-								 var nextPieceImg = new Image();
-
-								 nextPieceImg.id = "checker" + i;
-								 nextPieceImg.className = "checkerPiece";
-								 //position
-								 nextPieceImg.style.height = box_dim;
-								 nextPieceImg.style.width = box_dim;
-
-								 nextPieceImg.style.top = (box_dim * currChecker.row) + "px";
-								 nextPieceImg.style.left = (box_dim * currChecker.col) + "px";
-
-								 //setup event handlers
-								 nextPieceImg.addEventListener('dragstart', handleDragStart, false);
+								 
+								 var nextPieceImg = setupNextPiece(currChecker, i);
 
 								 if (currChecker.color == "black"){ //BLACK
 										 if (currChecker.isKing){
@@ -214,6 +208,40 @@ function draw_all_pieces(){
 				 }
 		 }
 }
+
+
+function setupNextPiece(currChecker, i){
+		var nextPieceImg = new Image();
+
+		nextPieceImg.id = "checker" + i;
+		
+		nextPieceImg.className = "checkerPiece ui-widget-content";
+
+
+		//position
+		nextPieceImg.style.height = box_dim;
+		nextPieceImg.style.width = box_dim;
+
+		nextPieceImg.style.top = (box_dim * currChecker.row) + "px";
+		nextPieceImg.style.left = (box_dim * currChecker.col) + "px";
+
+		//draggable
+//		nextPieceImg.draggable();
+
+		//setup event handlers
+
+		nextPieceImg.addEventListener('dragstart', handleDragStart, false);
+		nextPieceImg.addEventListener('dragenter', handleDragEnter, false);
+		nextPieceImg.addEventListener('dragover', handleDragOver, false);
+		nextPieceImg.addEventListener('dragleave', handleDragLeave, false);
+		nextPieceImg.addEventListener('drop', handleDrop, false);
+		nextPieceImg.addEventListener('dragend', handleDragEnd, false);
+
+		
+		return nextPieceImg;
+}
+
+
 
 function drawArrow(fromRow, fromCol, toRow, toCol){
 		console.log(fromRow, fromCol, toRow, toCol);
@@ -257,15 +285,48 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
 		 }
 }
 
+
+
+
 //mouse input handling
 				function handleDragStart(e){
-						this.style.opacity = '0.4';
+						dragSrcEl = this;
+						e.dataTransfer.effectAllowed = 'move';
+						e.dataTransfer.setData('text/html', this.innerHTML);
+				}
+
+				function handleDragOver(e){
+						console.log(e.target.style.top);
+						e.target.style.top = 10;
+						e.target.style.left = 10;
+						checker11.style.top = 10;
+
+		//				e.dataTransfer.dropEffect = 'move'; //DataTransfer
+						return false;
+				}
+
+				function handleDragEnter(e){
+						console.log(e.target);
+//						this.classList.add('over');
 				}
 				
+				function handleDragLeave(e){
+	//					this.classList.remove('over'
+				}
 
+				function handleDrop(e){
+	//					console.log(e.target);
+						if (dragSrcEl != this){ //dropping the same place we're dragging
+						}
+						
 
-
+				}
+				
+				function handleDragEnd(e){
+						
+				}
 		});
+
 
 </script>
 
@@ -289,7 +350,7 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
         <td id="content">
 
 		<div id="allBoardPieces" style="position:absolute; width:400px; height:400px;">
-			<div class="checkerPiece" draggable="true"></div>
+			<div class="checkerPiece ui-widget-content" draggable="true"></div>
 					<canvas id="canvasBoard" style="border-style:solid; border-color:gray; border-width:2px;" width="400" height="400" >
 					</canvas>
 	

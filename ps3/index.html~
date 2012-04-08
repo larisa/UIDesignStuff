@@ -20,6 +20,9 @@
 <script type="text/javascript" src="board.js"></script>
 <script type="text/javascript" src="rules.js"></script>
 
+
+
+
 <script type="text/javascript">
 
 //This script extracts parameters from the URL
@@ -170,15 +173,8 @@ function draw_all_pieces(){
 						 var allCurrCheckers = board.getAllCheckers();
 						 for (var i=0; i<allCurrCheckers.length; i++){
 								 var currChecker = allCurrCheckers[i];
-								 var nextPieceImg = new Image();
-
-								 nextPieceImg.id = "checker" + i;
-								 nextPieceImg.className = "checkerImg";
-								 nextPieceImg.style.height = box_dim;
-								 nextPieceImg.style.width = box_dim;
-
-								 nextPieceImg.style.top = (box_dim * currChecker.row) + "px";
-								 nextPieceImg.style.left = (box_dim * currChecker.col) + "px";
+								 
+								 var nextPieceImg = setupNextPiece(currChecker, i);
 
 								 if (currChecker.color == "black"){ //BLACK
 										 if (currChecker.isKing){
@@ -210,6 +206,32 @@ function draw_all_pieces(){
 				 }
 		 }
 }
+
+
+function setupNextPiece(currChecker, i){
+		var nextPieceImg = new Image();
+
+		nextPieceImg.id = "checker" + i;
+		nextPieceImg.className = "checkerPiece";
+
+		//position
+		nextPieceImg.style.height = box_dim;
+		nextPieceImg.style.width = box_dim;
+
+		nextPieceImg.style.top = (box_dim * currChecker.row) + "px";
+		nextPieceImg.style.left = (box_dim * currChecker.col) + "px";
+
+		//setup event handlers
+		nextPieceImg.addEventListener('dragstart', handleDragStart, false);
+		nextPieceImg.addEventListener('dragenter', handleDragEnter, false);
+		nextPieceImg.addEventListener('dragover', handleDragOver, false);
+		nextPieceImg.addEventListener('dragleave', handleDragLeave, false);
+		nextPieceImg.addEventListener('drop', handleDrop, false);
+		nextPieceImg.addEventListener('dragend', handleDragEnd, false);
+		
+		return nextPieceImg;
+}
+
 
 function drawArrow(fromRow, fromCol, toRow, toCol){
 		console.log(fromRow, fromCol, toRow, toCol);
@@ -253,8 +275,45 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
 		 }
 }
 
-//mouse input handling
 
+
+
+//mouse input handling
+				function handleDragStart(e){
+						dragSrcEl = this;
+						e.dataTransfer.effectAllowed = 'move';
+						e.dataTransfer.setData('text/html', this.innerHTML);
+				}
+
+				function handleDragOver(e){
+						console.log("in handleDragOver");
+						e.target.style.top = rectX
+						e.target.style.left = rectY;
+//						console.log(e.target);
+		//				e.dataTransfer.dropEffect = 'move'; //DataTransfer
+						return false;
+				}
+
+				function handleDragEnter(e){
+						console.log(e.target);
+//						this.classList.add('over');
+				}
+				
+				function handleDragLeave(e){
+	//					this.classList.remove('over'
+				}
+
+				function handleDrop(e){
+	//					console.log(e.target);
+						if (dragSrcEl != this){ //dropping the same place we're dragging
+						}
+						
+
+				}
+				
+				function handleDragEnd(e){
+						
+				}
 
 
 
@@ -282,9 +341,7 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
         <td id="content">
 
 		<div id="allBoardPieces" style="position:absolute; width:400px; height:400px;">
-			<div class="checkerImg" draggable="true"></div>
-		
-			
+			<div class="checkerPiece" draggable="true"></div>
 					<canvas id="canvasBoard" style="border-style:solid; border-color:gray; border-width:2px;" width="400" height="400" >
 					</canvas>
 	
