@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<!--
+  COLLABORATORS:
+  
+-->
+<html>
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Checkerboard</title>
+
+<!-- Load style sheets -->
+<link rel="stylesheet" type="text/css" href="mainLayout.css" />
+
+<!-- Load any supplemental Javascript libraries here -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="checker.js"></script>
+<script type="text/javascript" src="boardEvent.js"></script>
+<script type="text/javascript" src="board.js"></script>
+<script type="text/javascript" src="rules.js"></script>
+
+<script type="text/javascript">
+
+//This script extracts parameters from the URL
+//from jquery-howto.blogspot.com
+
+    $.extend({
+        getUrlVars : function() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(
+                    window.location.href.indexOf('?') + 1).split('&');
+            for ( var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        },
+        getUrlVar : function(name) {
+            return $.getUrlVars()[name];
+        }
+    });
+
+    var DEFAULT_BOARD_SIZE = 8;
+	  var BOARD_SIZE = DEFAULT_BOARD_SIZE;
+
+
+var box_dim = 400/DEFAULT_BOARD_SIZE; //TODO abstract 400
+
+    //data model
+    var board;
+    var rules;
+    var whoseTurn = "black";	
+
+    var directionOf = function(color) {
+      if (color == "black") {
+        return -1;
+      }
+      return 1;
+    }
+
+    // Fill in this function to toggle the display for whose turn
+    // The color parameter should be either "black" or "red"
+    var toggleTurn = function(color) {
+	// Your code here
+    }
+
+
+
+    // This allows the Javascript code inside this block to only run when the page
+    // has finished loading in the browser.
+    $(document).ready(function() {
+
+				//load images we'll use for pieces
+				var blackPiece = new Image();
+				var blackKing = new Image();
+				var redPiece = new Image();
+				var redKing = new Image();
+
+				blackPiece.src = 'graphics/black-piece.png';
+				blackKing.src = 'graphics/black-king.png';
+				redPiece.src = 'graphics/red-piece.png';
+				redKing.src = 'graphics/red-king.png';
+				
+				var allImages = document.images;
+				for (var i=0; i<allImages.length; i++){
+						allImages[i].height = 400/DEFAULT_BOARD_SIZE;
+						allImages[i].width = 400/DEFAULT_BOARD_SIZE;
+						allImages[i].position = 'absolute';
+				}
+
+
+        if ($.getUrlVar('size') && $.getUrlVar('size') >= 6) {
+            board = new Board($.getUrlVar('size'));
+        } else {
+            board = new Board(DEFAULT_BOARD_SIZE);
+        }
+				//draw the board we've created
+				draw_checkerboard();
+
+	rules = new Rules(board);
+	
+
+     	// Your code here
+
+        board.addEventListener('add',function (e) {
+    		// Your code here
+    	},true);
+
+    	board.addEventListener('move',function (e) {
+    	},true);
+
+				//e is a checker
+        board.addEventListener('remove', function(e) {
+						//repaint its square
+						console.log("we're oging to repaint");
+						repaint_square(e.row, e.column);
+        }, true);
+
+        board.addEventListener('promote',function (e) {
+    		// Your code here
+    	},true);
+
+        
+        $("#btnNewGame").click(function(evt) {
+						console.log("we've started a new game");
+            board.prepareNewGame();
+						draw_checkerboard();
+						draw_all_pieces();
+
+
+        });
+
+        $("#btnAutoMove").click(function(evt) {
+          var playerColor = whoseTurn;
+          var playerDirection = directionOf(playerColor);
+          var result = rules.makeRandomMove(playerColor, playerDirection);
+          if (result != null) {
+            toggleTurn();
+          }
+						draw_checkerboard();
+						draw_all_pieces();
+
+
+
+        });
+
+        board.prepareNewGame();
+				draw_all_pieces();
+
+				
+//draw checkerboard
+function draw_checkerboard(){
+		var canvas = document.getElementById("canvasBoard");
+
+		if (canvas && canvas.getContext){
+				var context = canvas.getContext("2d");
+
+				if (context){
+						//border around whole board
+						context.strokeStyle = '#000';
+						context.strokeRect(0, 0, 400, 400); //TODO abstract 400
+
+						//fill in grey boxes
+						for (var row=0; row<DEFAULT_BOARD_SIZE; row++){
+								for (var col=0; col<DEFAULT_BOARD_SIZE; col++){
+										if (((row + col)%2)==0){
+												continue; //skip this box, it's white
+										}
+										context.fillStyle = "gray";
+										context.fillRect(row*box_dim, col*box_dim, box_dim, box_dim);
+								}
+						}
+				}
+		}
+}
+function repaint_square(row, col){
+
+ 		var canvas = document.getElementById("canvasBoard");
+
+		if (canvas && canvas.getContext){
+				var context = canvas.getContext("2d");
+
+				if (context){
+						if (((row+col)%2)==0){
+
+
+								context.fillStyle = "white";
+						}
+						else{
+								context.fillStyle = "gray";
+						}
+						context.fillRect(row*box_dim, col*box_dim, box_dim, box_dim);
+				}
+		}
+																 }
+
+
+
+
+//draw board's entire current state 
+//assign id to each checker image. 
+function draw_all_pieces(){
+		 var canvas = document.getElementById("canvasBoard");
+
+		 if (canvas && canvas.getContext){
+				 var context = canvas.getContext("2d");
+
+				 if (context){
+						 var allCurrCheckers = board.getAllCheckers();
+						 for (var i=0; i<allCurrCheckers.length; i++){
+								 var currChecker = allCurrCheckers[i];
+								 var nextPieceImg = new Image();
+
+								 nextPieceImg.id = "checker" + i;
+								 nextPieceImg.className = "checkerImg";
+								 nextPieceImg.style.height = box_dim;
+								 nextPieceImg.style.width = box_dim;
+
+
+								 nextPieceImg.style.top = (box_dim * currChecker.row) + "px";
+								 nextPieceImg.style.left = (box_dim * currChecker.col) + "px";
+
+
+
+								 if (currChecker.color == "black"){ //BLACK
+										 if (currChecker.isKing){
+												 nextPieceImg.src = 'graphics/black-king.png';
+										 }
+										 else{
+												 nextPieceImg.src = 'graphics/black-piece.png';
+										 }
+								 }
+								 else{ //RED
+										 if (currChecker.isKing){
+												 nextPieceImg.src = 'graphics/red-king.png';
+										 }
+										 else{
+												 nextPieceImg.src = 'graphics/red-piece.png';
+										 }
+								 }
+
+								 //Add new piece-image to div of all pieces (canvas)
+								 allBoardPieces.appendChild(nextPieceImg);
+						 }
+				 }
+		 }
+}
+
+
+		});
+										 
+
+
+				
+
+</script>
+
+
+</head>
+
+<body>
+
+<table id="mainTable">
+    <tr>
+        <td id="navigation">
+          <table>
+			  <tr><td>		
+								<!-- Your code here -->		
+
+		</td></tr>
+              <tr><td><input id="btnNewGame" type="button" name="new" value="New Game"/></td></tr>
+              <tr><td><input id="btnAutoMove" type="button" name="new" value="Auto Move"/></td></tr>
+
+            </table>
+        </td>
+
+        <td id="content">
+		<div id="allBoardPieces" style="position:absolute; width:400px; height:400px;">
+		
+					<canvas id="canvasBoard" width="400" height="400" >
+					</canvas>
+	</div>
+
+            
+        </td>
+    </tr>
+
+   </table>
+
+</body>
+
+</html>
