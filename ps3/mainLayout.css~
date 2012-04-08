@@ -1,4 +1,7 @@
-﻿#navigation{
+﻿#mainTable{
+}
+
+#navigation{
 	width:140px
 }
 
@@ -21,6 +24,11 @@
 
 #canvasBoard{
 		z-index:-1;
+		position: absolute;
+}
+
+#canvasStrokes{
+		z-index:3;
 		position: absolute;
 }
 

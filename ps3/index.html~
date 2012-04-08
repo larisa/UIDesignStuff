@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!--
-  COLLABORATORS:
+  COLLABORATORS: NONE
   
 -->
 <html>
@@ -44,14 +44,12 @@
 
     var DEFAULT_BOARD_SIZE = 8;
 	  var BOARD_SIZE = DEFAULT_BOARD_SIZE;
-
-
-var box_dim = 400/DEFAULT_BOARD_SIZE; //TODO abstract 400
+	  var box_dim = 400/DEFAULT_BOARD_SIZE; //TODO abstract 400
 
     //data model
     var board;
     var rules;
-    var whoseTurn = "black";	
+    var whoseTurn = "black";	//black goes first
 
     var directionOf = function(color) {
       if (color == "black") {
@@ -62,34 +60,20 @@ var box_dim = 400/DEFAULT_BOARD_SIZE; //TODO abstract 400
 
     // Fill in this function to toggle the display for whose turn
     // The color parameter should be either "black" or "red"
-    var toggleTurn = function(color) {
-	// Your code here
+var toggleTurn = function(color) {
+		if (whoseTurn == "black"){
+				whoseTurn = "red"; 
+				document.getElementById("currTurn").innerHTML = "Red Turn";
+				return;
+		}
+		whoseTurn = "black";
+		document.getElementById("currTurn").innerHTML = "Black Turn";
     }
-
 
 
     // This allows the Javascript code inside this block to only run when the page
     // has finished loading in the browser.
     $(document).ready(function() {
-
-				//load images we'll use for pieces
-				var blackPiece = new Image();
-				var blackKing = new Image();
-				var redPiece = new Image();
-				var redKing = new Image();
-
-				blackPiece.src = 'graphics/black-piece.png';
-				blackKing.src = 'graphics/black-king.png';
-				redPiece.src = 'graphics/red-piece.png';
-				redKing.src = 'graphics/red-king.png';
-				
-				var allImages = document.images;
-				for (var i=0; i<allImages.length; i++){
-						allImages[i].height = 400/DEFAULT_BOARD_SIZE;
-						allImages[i].width = 400/DEFAULT_BOARD_SIZE;
-						allImages[i].position = 'absolute';
-				}
-
 
         if ($.getUrlVar('size') && $.getUrlVar('size') >= 6) {
             board = new Board($.getUrlVar('size'));
@@ -101,7 +85,6 @@ var box_dim = 400/DEFAULT_BOARD_SIZE; //TODO abstract 400
 
 	rules = new Rules(board);
 	
-
      	// Your code here
 
         board.addEventListener('add',function (e) {
@@ -109,13 +92,14 @@ var box_dim = 400/DEFAULT_BOARD_SIZE; //TODO abstract 400
     	},true);
 
     	board.addEventListener('move',function (e) {
+					console.log(e);
+					var move = e.details;
+					drawArrow(move.fromRow, move.fromCol, move.toRow, move.toCol);
     	},true);
 
-				//e is a checker
+
         board.addEventListener('remove', function(e) {
-						//repaint its square
-						console.log("we're oging to repaint");
-						repaint_square(e.row, e.column);
+    		// Your code here
         }, true);
 
         board.addEventListener('promote',function (e) {
@@ -124,11 +108,9 @@ var box_dim = 400/DEFAULT_BOARD_SIZE; //TODO abstract 400
 
         
         $("#btnNewGame").click(function(evt) {
-						console.log("we've started a new game");
             board.prepareNewGame();
 						draw_checkerboard();
 						draw_all_pieces();
-
 
         });
 
@@ -142,8 +124,6 @@ var box_dim = 400/DEFAULT_BOARD_SIZE; //TODO abstract 400
 						draw_checkerboard();
 						draw_all_pieces();
 
-
-
         });
 
         board.prepareNewGame();
@@ -152,15 +132,13 @@ var box_dim = 400/DEFAULT_BOARD_SIZE; //TODO abstract 400
 				
 //draw checkerboard
 function draw_checkerboard(){
+
 		var canvas = document.getElementById("canvasBoard");
 
 		if (canvas && canvas.getContext){
 				var context = canvas.getContext("2d");
 
 				if (context){
-						//border around whole board
-						context.strokeStyle = '#000';
-						context.strokeRect(0, 0, 400, 400); //TODO abstract 400
 
 						//fill in grey boxes
 						for (var row=0; row<DEFAULT_BOARD_SIZE; row++){
@@ -175,26 +153,7 @@ function draw_checkerboard(){
 				}
 		}
 }
-function repaint_square(row, col){
 
- 		var canvas = document.getElementById("canvasBoard");
-
-		if (canvas && canvas.getContext){
-				var context = canvas.getContext("2d");
-
-				if (context){
-						if (((row+col)%2)==0){
-
-
-								context.fillStyle = "white";
-						}
-						else{
-								context.fillStyle = "gray";
-						}
-						context.fillRect(row*box_dim, col*box_dim, box_dim, box_dim);
-				}
-		}
-																 }
 
 
 
@@ -218,11 +177,8 @@ function draw_all_pieces(){
 								 nextPieceImg.style.height = box_dim;
 								 nextPieceImg.style.width = box_dim;
 
-
 								 nextPieceImg.style.top = (box_dim * currChecker.row) + "px";
 								 nextPieceImg.style.left = (box_dim * currChecker.col) + "px";
-
-
 
 								 if (currChecker.color == "black"){ //BLACK
 										 if (currChecker.isKing){
@@ -241,22 +197,70 @@ function draw_all_pieces(){
 										 }
 								 }
 
-								 //Add new piece-image to div of all pieces (canvas)
+								 //add newPieceImg to div, delete pre-existing elt if applicable
+								 var oldPiece = document.getElementById(nextPieceImg.id);
+								 if (oldPiece){
+										 allBoardPieces.removeChild(oldPiece);
+								 }
+//								 var newPiece = $("<div/>", {"class": "singlePiece"});
+	//							 allBoardPiece.appendChild(newPiece);
+																									 
 								 allBoardPieces.appendChild(nextPieceImg);
 						 }
 				 }
 		 }
 }
 
+function drawArrow(fromRow, fromCol, toRow, toCol){
+		console.log(fromRow, fromCol, toRow, toCol);
+		var offset = -25;
+		 var canvas = document.getElementById("canvasStrokes");
+
+		 if (canvas && canvas.getContext){
+				 var context = canvas.getContext("2d");
+				 var arrowStartX = fromCol*box_dim-offset;
+				 var arrowStartY = fromRow*box_dim-offset;
+				 var arrowEndX = toCol*box_dim-offset;
+				 var arrowEndY = toRow*box_dim-offset;
+
+				 if (context){
+						 //clear 
+						 context.clearRect(0, 0, 400, 400);
+
+						 //paint next arrow
+						 context.beginPath();
+						 //shaft
+						 context.moveTo(arrowStartX, arrowStartY);
+						 context.lineTo(arrowEndX, arrowEndY);
+						 
+						 //head
+						 var lengthHead = 5;
+						 var angle = Math.atan2(arrowEndY-arrowStartY, arrowEndX-arrowStartX);
+						 
+						 context.lineTo(arrowEndX-lengthHead*Math.cos(angle-Math.PI/6), 
+														arrowEndY-lengthHead*Math.sin(angle-Math.PI/6));
+						 
+						 context.moveTo(arrowEndX, arrowEndY);
+
+						 context.lineTo(arrowEndX-lengthHead*Math.cos(angle+Math.PI/6),arrowEndY-
+														lengthHead*Math.sin(angle+Math.PI/6));
+						 
+
+						 context.strokeStyle = '#FFE303';
+						 context.lineWidth = 2;
+						 context.stroke();
+				}
+		 }
+}
+
+//mouse input handling
+
+
+
 
 		});
-										 
-
-
-				
 
 </script>
-
 
 </head>
 
@@ -266,8 +270,7 @@ function draw_all_pieces(){
     <tr>
         <td id="navigation">
           <table>
-			  <tr><td>		
-								<!-- Your code here -->		
+			  <tr><td id="currTurn" name="currTurn" style="background-color:black; color:white; text-align:center">Black Turn
 
 		</td></tr>
               <tr><td><input id="btnNewGame" type="button" name="new" value="New Game"/></td></tr>
@@ -277,10 +280,21 @@ function draw_all_pieces(){
         </td>
 
         <td id="content">
+
 		<div id="allBoardPieces" style="position:absolute; width:400px; height:400px;">
+			<div class="checkerImg" draggable="true"></div>
 		
-					<canvas id="canvasBoard" width="400" height="400" >
+			
+					<canvas id="canvasBoard" style="border-style:solid; border-color:gray; border-width:2px;" width="400" height="400" >
 					</canvas>
+	
+				<canvas id="canvasStrokes" width="400" height="400">
+						</canvas>
+
+				<canvas id="canvasAnimatePieces" width="400" height="400">
+		
+		
+
 	</div>
 
             
