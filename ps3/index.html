@@ -214,11 +214,11 @@ function setupNextPiece(currChecker, i){
 		var nextPieceImg = new Image();
 
 		nextPieceImg.id = "checker" + i;
-		
-		nextPieceImg.className = "checkerPiece ui-widget-content";
+		nextPieceImg.className = "checkerPiece";
 
 
 		//position
+		nextPieceImg.style.position = "absolute";
 		nextPieceImg.style.height = box_dim;
 		nextPieceImg.style.width = box_dim;
 
@@ -226,18 +226,11 @@ function setupNextPiece(currChecker, i){
 		nextPieceImg.style.left = (box_dim * currChecker.col) + "px";
 
 		//draggable
-//		nextPieceImg.draggable();
+		$(nextPieceImg).draggable({
+				appendTo: "#canvasBoard"
+		});
 
-		//setup event handlers
 
-		nextPieceImg.addEventListener('dragstart', handleDragStart, false);
-		nextPieceImg.addEventListener('dragenter', handleDragEnter, false);
-		nextPieceImg.addEventListener('dragover', handleDragOver, false);
-		nextPieceImg.addEventListener('dragleave', handleDragLeave, false);
-		nextPieceImg.addEventListener('drop', handleDrop, false);
-		nextPieceImg.addEventListener('dragend', handleDragEnd, false);
-
-		
 		return nextPieceImg;
 }
 
@@ -350,7 +343,8 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
         <td id="content">
 
 		<div id="allBoardPieces" style="position:absolute; width:400px; height:400px;">
-			<div class="checkerPiece ui-widget-content" draggable="true"></div>
+
+		<div class="checkerPiece" style="position:absolute;" draggable="true"></div>
 					<canvas id="canvasBoard" style="border-style:solid; border-color:gray; border-width:2px;" width="400" height="400" >
 					</canvas>
 	
