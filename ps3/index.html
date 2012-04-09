@@ -57,6 +57,7 @@
     var ramifications = []; //undo cache starts blank
     var toRedo = [];
 
+
     var directionOf = function(color) {
       if (color == "black") {
         return -1;
@@ -128,6 +129,7 @@ var toggleTurn = function(color) {
           if (result != null) {
             toggleTurn();
 						ramifications.push(result);
+							document.getElementById("btnUndo").disabled = false;
 						console.log(ramifications);
           }
 						draw_checkerboard();
@@ -145,7 +147,11 @@ var toggleTurn = function(color) {
 								draw_all_pieces();
 								
 								toRedo.push(lastMove);
+								document.getElementById("btnRedo").disabled = false;
 								ramifications.pop(lastMove);
+								if (ramifications.length==0){
+										var undoButton = document.getElementById("btnUndo").disabled = true;
+								}
 						}
 
 				});
@@ -161,6 +167,9 @@ var toggleTurn = function(color) {
 								draw_all_pieces();
 
 								toRedo.pop(lastMove);
+								if (toRedo.length==0){
+										var redoButton = document.getElementById("btnRedo").disabled = true;
+								}
 						}
 
 								
@@ -322,9 +331,12 @@ function setupNextPiece(currChecker, i){
 														"newPos: " + newRow + "," + newCol)
 								if (whoseTurn=="black"){
 										ramifications.push(rules.makeMove(originalChecker, -1, -1, newRow, newCol));
+										document.getElementById("btnUndo").disabled = true;
 								}
 								else{
-										ramifications.push(rules.makeMove(originalChecker, 1, 1, newRow, newCol))
+										ramifications.push(rules.makeMove(originalChecker, 1, 1, newRow, newCol));
+										document.getElementById("btnUndo").disabled = true;
+
 								}
 								var finalCheckers = board.getAllCheckers();
 								draw_checkerboard();
@@ -451,8 +463,8 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
 		</td></tr>
               <tr><td><input id="btnNewGame" type="button" name="new" value="New Game"/></td></tr>
               <tr><td><input id="btnAutoMove" type="button" name="new" value="Auto Move"/></td></tr>
-				<tr><td><input id="btnUndo" type="button" name="new" value="Undo"/></td></tr>
-				<tr><td><input id="btnRedo" type="button" name="new" value="Redo"/></td></tr>
+				<tr><td><input id="btnUndo" type="button" name="new" value="Undo" disabled="true"/></td></tr>
+				<tr><td><input id="btnRedo" type="button" name="new" value="Redo" disabled="true"/></td></tr>
 							
 		
 
@@ -467,7 +479,7 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
 					<canvas id="canvasBoard" style="border-style:solid; border-color:gray; border-width:2px;" width="400" height="400" >
 					</canvas>
 	
-				<canvas id="canvasStrokes" width="400" height="400">
+		<canvas id="canvasStrokes" style="pointer-events: none;" width="400" height="400">
 						</canvas>
 
 				<canvas id="canvasAnimatePieces" width="400" height="400">
