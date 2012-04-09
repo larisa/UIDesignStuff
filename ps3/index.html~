@@ -54,6 +54,7 @@
     var board;
     var rules;
     var whoseTurn = "black";	//black goes first
+    var ramifications = null; //undo cache starts blank
 
     var directionOf = function(color) {
       if (color == "black") {
@@ -227,7 +228,7 @@ function setupNextPiece(currChecker, i){
 		//make checker draggable
 		var startPos;
 		var stopPos;
-		$(nextPieceImg).draggable(){
+		$(nextPieceImg).draggable({
 				appendTo: "#canvasBoard",
 				//save the startPos of the checker, in case of an "invalid" drag
 				start: function(event, nextPieceImg){
@@ -247,11 +248,15 @@ function setupNextPiece(currChecker, i){
 }
 
 				function dragChecker(checkerPiece, startPos, stopPos){
-						var oldRow = Math.floor(startPos.top/box_dim);
-						var oldCol = Math.floor(startPos.left/box_dim);
-						var newRow = Math.floor(stopPos.top/box_dim);
-						var newCol = Math.floor(stopPos.left/box_dim);
-
+						
+						var oldRow = Math.round(startPos.top/box_dim);
+						var oldCol = Math.round(startPos.left/box_dim);
+						console.log("oldRow and oldCol" + oldRow + "," + oldCol);
+						console.log("pre-floor: " + stopPos.top/box_dim + "," + stopPos.left/box_dim);
+						var newRow = Math.round(stopPos.top/box_dim);
+						var newCol = Math.round(stopPos.left/box_dim);
+						console.log("newRow and newCol" + newRow + "," + newCol);
+						
 						var originalChecker;
 						var allCurrCheckers = board.getAllCheckers();
 						for (var i=0; i<allCurrCheckers.length; i++){
@@ -263,15 +268,51 @@ function setupNextPiece(currChecker, i){
 								//see if new position is occupied
 								if (allCurrCheckers[i].row==newRow &&
 										allCurrCheckers[i].col==newCol){
-										console.log(allCurrCheckers[i]);
 										//move checker back to its original position
-										checkerPiece.top = startPos.top;
-										checkerPiece.left = startPos.left;
-										return;
+										draw_checkerboard();
+										draw_all_pieces();
+										return
 								}
 						}
-						//move to new position
-						rules.makeMove(
+
+						//MOVE
+						//check that move is valid (that it's the right turn)
+
+						if ((whoseTurn=="black" && originalChecker.color=="black") ||
+								(whoseTurn=="red" && originalChecker.color=="red")){
+								console.log("making a move");
+								var originalCheckers = board.getAllCheckers();
+								
+								console.log("oldPos: " + oldRow + "," + oldCol +
+														"newPos: " + newRow + "," + newCol)
+								if (whoseTurn=="black"){
+										ramifications = rules.makeMove(originalChecker, -1, -1, newRow, newCol);
+								}
+								else{
+										ramifications = rules.makeMove(originalChecker, 1, 1, newRow, newCol);
+								}
+								var finalCheckers = board.getAllCheckers();
+								draw_checkerboard();
+								draw_all_pieces();
+
+								
+								if (originalChecker.row==newRow && originalChecker.col==newCol){
+										console.log("Turn Done");
+										//next player's turn
+										toggleTurn();
+								}
+
+						}
+						else{
+								console.log("not your turn");
+								draw_checkerboard();
+								draw_all_pieces();
+
+								$(checkerPiece).position.left = startPos.left;
+								$(checkerPiece).position.top = startPos.top;
+								//don't move, put the checker back!
+						}
+
 				}
 						
 
@@ -375,6 +416,10 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
 		</td></tr>
               <tr><td><input id="btnNewGame" type="button" name="new" value="New Game"/></td></tr>
               <tr><td><input id="btnAutoMove" type="button" name="new" value="Auto Move"/></td></tr>
+				<tr><td><input id="btnUndo" type="button" name="new" value="Undo"/></td></tr>
+				<tr><td><input id="btnRedo" type="button" name="new" value="Redo"/></td></tr>
+							
+		
 
             </table>
         </td>
