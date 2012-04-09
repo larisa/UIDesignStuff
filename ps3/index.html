@@ -247,11 +247,15 @@ function setupNextPiece(currChecker, i){
 }
 
 				function dragChecker(checkerPiece, startPos, stopPos){
-						var oldRow = Math.floor(startPos.top/box_dim);
-						var oldCol = Math.floor(startPos.left/box_dim);
-						var newRow = Math.floor(stopPos.top/box_dim);
-						var newCol = Math.floor(stopPos.left/box_dim);
+						
+						var oldRow = Math.round(startPos.top/box_dim);
+						var oldCol = Math.round(startPos.left/box_dim);
 
+						console.log("pre-floor: " + stopPos.top/box_dim + "," + stopPos.left/box_dim);
+						var newRow = Math.round(stopPos.top/box_dim);
+						var newCol = Math.round(stopPos.left/box_dim);
+						console.log("newRow and newCol" + newRow + "," + newCol);
+						
 						var originalChecker;
 						var allCurrCheckers = board.getAllCheckers();
 						for (var i=0; i<allCurrCheckers.length; i++){
@@ -263,7 +267,6 @@ function setupNextPiece(currChecker, i){
 								//see if new position is occupied
 								if (allCurrCheckers[i].row==newRow &&
 										allCurrCheckers[i].col==newCol){
-										console.log(allCurrCheckers[i]);
 										//move checker back to its original position
 										checkerPiece.top = startPos.top;
 										checkerPiece.left = startPos.left;
@@ -273,19 +276,34 @@ function setupNextPiece(currChecker, i){
 
 						//MOVE
 						//check that move is valid (that it's the right turn)
+
 						if ((whoseTurn=="black" && originalChecker.color=="black") ||
 								(whoseTurn=="red" && originalChecker.color=="red")){
-								console.log(originalCheckers);
+								console.log("making a move");
 								var originalCheckers = board.getAllCheckers();
 								
-								rules.makeMove(originalChecker, 1, 1, newRow, newCol);
+								console.log("oldPos: " + oldRow + "," + oldCol +
+														"newPos: " + newRow + "," + newCol)
+								if (whoseTurn=="black"){
+										rules.makeMove(originalChecker, -1, -1, newRow, newCol);
+								}
+								else{
+										rules.makeMove(originalChecker, 1, 1, newRow, newCol);
+								}
 								var finalCheckers = board.getAllCheckers();
-								draw_checkerboard();
-								draw_all_pieces();
-								console.log(finalCheckers);
-								console.log(originalCheckers == finalCheckers);
+	//							draw_checkerboard();
+	//							draw_all_pieces();
+								console.log("move made?" + originalCheckers == finalCheckers);
+								//next player's turn
+								toggleTurn();
 						}
 						else{
+								console.log("not your turn");
+								draw_checkerboard();
+								draw_all_pieces();
+
+								$(checkerPiece).position.left = startPos.left;
+								$(checkerPiece).position.top = startPos.top;
 								//don't move, put the checker back!
 						}
 

@@ -33,7 +33,7 @@ var Rules = function(board) {
    * Note about directions:
    *  For rule checking, the Rules object represents both turns and players by directions on the
    *  board, either +1 or -1, not by piece coloring. If the turn is +1 and the checker moved represents
-   *  player -1 for exampe, the Rules object will reject this move and return null. Don't worry about
+   *  player -1 for example, the Rules object will reject this move and return null. Don't worry about
    *  kings being bidirectional -- this object knows how to take this into account.
    *
    * Succes Return: 

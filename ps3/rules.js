@@ -60,8 +60,12 @@ var Rules = function(board) {
 
     var wasKingBefore = checker.isKing;
 
+				console.log(checker, turnDirection, playerDirection, toRow, toCol);
     // Invalid move?
     if (ramifications == null) {
+				console.log("invalidMove");
+
+
       return null;
     }
 
