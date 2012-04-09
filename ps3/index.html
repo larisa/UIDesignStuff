@@ -150,7 +150,7 @@ var toggleTurn = function(color) {
 								document.getElementById("btnRedo").disabled = false;
 								ramifications.pop(lastMove);
 								if (ramifications.length==0){
-										var undoButton = document.getElementById("btnUndo").disabled = true;
+										document.getElementById("btnUndo").disabled = true;
 								}
 						}
 
@@ -166,10 +166,15 @@ var toggleTurn = function(color) {
 								draw_checkerboard();
 								draw_all_pieces();
 
+								ramifications.push(lastMove);
 								toRedo.pop(lastMove);
 								if (toRedo.length==0){
-										var redoButton = document.getElementById("btnRedo").disabled = true;
+										document.getElementById("btnRedo").disabled = true;
 								}
+								if (ramifications.length==1){
+										document.getElementById("btnUndo").disabled = false;
+								}
+										
 						}
 
 								
@@ -331,11 +336,11 @@ function setupNextPiece(currChecker, i){
 														"newPos: " + newRow + "," + newCol)
 								if (whoseTurn=="black"){
 										ramifications.push(rules.makeMove(originalChecker, -1, -1, newRow, newCol));
-										document.getElementById("btnUndo").disabled = true;
+										document.getElementById("btnUndo").disabled = false;
 								}
 								else{
 										ramifications.push(rules.makeMove(originalChecker, 1, 1, newRow, newCol));
-										document.getElementById("btnUndo").disabled = true;
+										document.getElementById("btnUndo").disabled = false;
 
 								}
 								var finalCheckers = board.getAllCheckers();
