@@ -140,8 +140,8 @@ var toggleTurn = function(color) {
 						if (ramifications.length>0){
 								var lastMove = ramifications[ramifications.length-1];
 								var lastChecker = board.getCheckerAt(lastMove.to_row, lastMove.to_col);
-								board.moveTo(lastChecker, lastMove.from_row, lastMove.to_col);
-								board.prepareNewGame();
+								board.moveTo(lastChecker, lastMove.from_row, lastMove.from_col);
+								draw_checkerboard();
 								draw_all_pieces();
 								
 								toRedo.push(lastMove);
@@ -151,6 +151,19 @@ var toggleTurn = function(color) {
 				});
 
         $("#btnRedo").click(function(evt) {
+						console.log("toRedo ");
+						console.log(toRedo);
+						if (toRedo.length > 0){
+								var lastMove = toRedo[toRedo.length-1];
+								var lastChecker = board.getCheckerAt(lastMove.from_row, lastMove.from_col);
+								board.moveTo(lastChecker, lastMove.to_row, lastMove.to_col);
+								draw_checkerboard();
+								draw_all_pieces();
+
+								toRedo.pop(lastMove);
+						}
+
+								
 				});
 						
         board.prepareNewGame();
