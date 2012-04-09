@@ -216,7 +216,6 @@ function setupNextPiece(currChecker, i){
 		nextPieceImg.id = "checker" + i;
 		nextPieceImg.className = "checkerPiece";
 
-
 		//position
 		nextPieceImg.style.position = "absolute";
 		nextPieceImg.style.height = box_dim;
@@ -225,16 +224,73 @@ function setupNextPiece(currChecker, i){
 		nextPieceImg.style.top = (box_dim * currChecker.row) + "px";
 		nextPieceImg.style.left = (box_dim * currChecker.col) + "px";
 
-		//draggable
+		//make checker draggable
+		var startPos;
+		var stopPos;
 		$(nextPieceImg).draggable({
-				appendTo: "#canvasBoard"
+				appendTo: "#canvasBoard",
+				//save the startPos of the checker, in case of an "invalid" drag
+				start: function(event, nextPieceImg){
+						console.log("e" + event);
+						startPos = $(this).position();
+						console.log(startPos);
+				},
+				
+				stop: function(event, nextPieceImg){
+						stopPos = $(this).position();
+						console.log(stopPos);
+						dragChecker(nextPieceImg, startPos, stopPos);
+				}
 		});
-
 
 		return nextPieceImg;
 }
 
+				function dragChecker(checkerPiece, startPos, stopPos){
+						var oldRow = Math.floor(startPos.top/box_dim);
+						var oldCol = Math.floor(startPos.left/box_dim);
+						var newRow = Math.floor(stopPos.top/box_dim);
+						var newCol = Math.floor(stopPos.left/box_dim);
 
+						var originalChecker;
+						var allCurrCheckers = board.getAllCheckers();
+						for (var i=0; i<allCurrCheckers.length; i++){
+								//find original checker row/col before it was dragged
+								if (allCurrCheckers[i].row==oldRow &&
+										allCurrCheckers[i].col==oldCol){
+										originalChecker = allCurrCheckers[i];
+								}
+								//see if new position is occupied
+								if (allCurrCheckers[i].row==newRow &&
+										allCurrCheckers[i].col==newCol){
+										console.log(allCurrCheckers[i]);
+										//move checker back to its original position
+										checkerPiece.top = startPos.top;
+										checkerPiece.left = startPos.left;
+										return;
+								}
+						}
+
+						//MOVE
+						//check that move is valid (that it's the right turn)
+						if ((whoseTurn=="black" && originalChecker.color=="black") ||
+								(whoseTurn=="red" && originalChecker.color=="red")){
+								console.log(originalCheckers);
+								var originalCheckers = board.getAllCheckers();
+								
+								rules.makeMove(originalChecker, 1, 1, newRow, newCol);
+								var finalCheckers = board.getAllCheckers();
+								draw_checkerboard();
+								draw_all_pieces();
+								console.log(finalCheckers);
+								console.log(originalCheckers == finalCheckers);
+						}
+						else{
+								//don't move, put the checker back!
+						}
+
+				}
+						
 
 function drawArrow(fromRow, fromCol, toRow, toCol){
 		console.log(fromRow, fromCol, toRow, toCol);

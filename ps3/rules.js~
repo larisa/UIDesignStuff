@@ -1,3 +1,12 @@
+/* 
+ * The rules of checkers.
+ * Ted Benson <eob@csail.mit.edu>
+ * 
+ * This class implements the rules of American checkers. Note that we
+ * use the variant that does not require to "eat" another checker if that
+ * is a possibility.
+ *
+ */
 var Rules = function(board) {
 
    /***************************************************************
@@ -32,8 +41,10 @@ var Rules = function(board) {
    *    'to_col': XPrime,
    *    'from_row': Y,
    *    'to_row':Z,
+   *    'made_king':false,
    *     'removed':[
-   *        {'col':X, 'row':Y, 'color':Z}
+   *        {'col':X, 'row':Y, 'color':Z, 'isKing':true},
+   *        {'col':X, 'row':Y, 'color':Z, 'isKing':false}
    *     ]
    *  }
    *
@@ -46,6 +57,8 @@ var Rules = function(board) {
                                                  playerDirection,
                                                  toRow,
                                                  toCol);
+
+    var wasKingBefore = checker.isKing;
 
     // Invalid move?
     if (ramifications == null) {
@@ -60,9 +73,12 @@ var Rules = function(board) {
     
     // 1. Move the piece
     board.moveTo(checker, ramifications['to_row'], ramifications['to_col']); 
-   
+    ramifications['made_king'] = ((! wasKingBefore) && (checker.isKing));
+    //if (ramifications['made_king']) alert("made king: " + ramifications['made_king']);
+    
     // 2. Remove dead checkers
     for (var i=0; i<ramifications['remove'].length; i++) {
+      //if (ramifications['remove'][i]['isKing']) alert("removed king");
       board.remove(
         board.getCheckerAt(
           ramifications['remove'][i]['row'],
@@ -89,44 +105,26 @@ var Rules = function(board) {
         myCheckers.push(checkers[i]);
       }
     }
-    // now randomly sort
-    myCheckers.sort(function(a,b) {
-      return (parseInt(Math.random()*10) % 2);
-    });
-  
-    var allValidMoves = [];
 
-    // generate all possible moves for all checkers
+    // now randomly sort
+    myCheckers = this.shuffle(myCheckers);
+      
     for (var i=0; i<myCheckers.length; i++) {
       var validMoves = this.validMovesFor(myCheckers[i], playerDirection);
-      // randomize the moves
-      validMoves.sort(function(a,b) {
-        return (parseInt(Math.random()*10) %2);
-      });
-      if (validMoves.length > 0)
-      {
-        allValidMoves.push({"checker": myCheckers[i],
-                            "valid_moves":validMoves});
+      if (validMoves.length > 0) {
+        // Randomize the moves
+        validMoves = this.shuffle(validMoves);
+        // Make the move!
+        var move = validMoves[0];
+        return this.makeMove(
+          myCheckers[i],
+          playerDirection,
+          playerDirection,
+          move.to_row,
+          move.to_col
+        );
       }
     }
-    	
-    if (allValidMoves.length > 0)
-    {
-      // Randomize the checkers
-      allValidMoves.sort(function(a,b) {
-        return (parseInt(Math.random()*10) % 2);
-      });
-      // Make the move!
-      var move = allValidMoves[0];
-      return this.makeMove(
-          move.checker,
-          playerDirection,
-          playerDirection,
-          move.valid_moves[0].to_row,
-          move.valid_moves[0].to_col
-        );
-    }
-    
     // If were still here, no move is possible
     return null;
   }
@@ -163,8 +161,6 @@ var Rules = function(board) {
      */
     for (var i = -1; i < 2; i++) {
       if (i != 0) {
-	var r = checker.row + playerDirection;
-	var c = checker.col + i;
       if (board.isValidLocation(checker.row + playerDirection, checker.col + i) &&
           board.isEmptyLocation(checker.row + playerDirection, checker.col + i)) {
         validMoves.push({'to_col': checker.col + i,
@@ -181,8 +177,6 @@ var Rules = function(board) {
      */
     for (var i = -1; i < 2; i++) {
      if (i != 0) {
-       var r = checker.row - playerDirection;
-       var c = checker.col + i;
       if (board.isValidLocation(checker.row - playerDirection, checker.col + i) &&
           board.isEmptyLocation(checker.row - playerDirection, checker.col + i) &&
           (checker.isKing == true)) {
@@ -213,7 +207,8 @@ var Rules = function(board) {
       move['remove'].push({
         'row':jumpSequence[j].killedRow,
         'col':jumpSequence[j].killedCol,
-        'color':board.getCheckerAt(jumpSequence[j].killedRow, jumpSequence[j].killedCol).color
+        'color':board.getCheckerAt(jumpSequence[j].killedRow, jumpSequence[j].killedCol).color,
+        'isKing':board.getCheckerAt(jumpSequence[j].killedRow, jumpSequence[j].killedCol).isKing
       });
     }
     
@@ -275,6 +270,19 @@ var Rules = function(board) {
       } // if is valid jump
     } // for each possibnle destination
     return retSeqs; // No valid seqs.
+  }
+
+  this.shuffle = function(array) {
+    var tmp, current, top = array.length;
+
+    if(top) while(--top) {
+        current = Math.floor(Math.random() * (top + 1));
+        tmp = array[current];
+        array[current] = array[top];
+        array[top] = tmp;
+    }
+
+    return array;
   }
 
   this.isValidJump = function(checker, fromRow, fromCol, toRow, toCol, playerDirection) {

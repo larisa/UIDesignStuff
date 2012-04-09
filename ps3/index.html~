@@ -19,7 +19,8 @@
 <script type="text/javascript" src="boardEvent.js"></script>
 <script type="text/javascript" src="board.js"></script>
 <script type="text/javascript" src="rules.js"></script>
-
+<script type="text/javascript" src="draw.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 
 
 
@@ -164,6 +165,7 @@ function draw_checkerboard(){
 //draw board's entire current state 
 //assign id to each checker image. 
 function draw_all_pieces(){
+		console.log("in draw_all_pieces");
 		 var canvas = document.getElementById("canvasBoard");
 
 		 if (canvas && canvas.getContext){
@@ -215,23 +217,63 @@ function setupNextPiece(currChecker, i){
 		nextPieceImg.className = "checkerPiece";
 
 		//position
+		nextPieceImg.style.position = "absolute";
 		nextPieceImg.style.height = box_dim;
 		nextPieceImg.style.width = box_dim;
 
 		nextPieceImg.style.top = (box_dim * currChecker.row) + "px";
 		nextPieceImg.style.left = (box_dim * currChecker.col) + "px";
 
-		//setup event handlers
-		nextPieceImg.addEventListener('dragstart', handleDragStart, false);
-		nextPieceImg.addEventListener('dragenter', handleDragEnter, false);
-		nextPieceImg.addEventListener('dragover', handleDragOver, false);
-		nextPieceImg.addEventListener('dragleave', handleDragLeave, false);
-		nextPieceImg.addEventListener('drop', handleDrop, false);
-		nextPieceImg.addEventListener('dragend', handleDragEnd, false);
-		
+		//make checker draggable
+		var startPos;
+		var stopPos;
+		$(nextPieceImg).draggable(){
+				appendTo: "#canvasBoard",
+				//save the startPos of the checker, in case of an "invalid" drag
+				start: function(event, nextPieceImg){
+						console.log("e" + event);
+						startPos = $(this).position();
+						console.log(startPos);
+				},
+				
+				stop: function(event, nextPieceImg){
+						stopPos = $(this).position();
+						console.log(stopPos);
+						dragChecker(nextPieceImg, startPos, stopPos);
+				}
+		});
+
 		return nextPieceImg;
 }
 
+				function dragChecker(checkerPiece, startPos, stopPos){
+						var oldRow = Math.floor(startPos.top/box_dim);
+						var oldCol = Math.floor(startPos.left/box_dim);
+						var newRow = Math.floor(stopPos.top/box_dim);
+						var newCol = Math.floor(stopPos.left/box_dim);
+
+						var originalChecker;
+						var allCurrCheckers = board.getAllCheckers();
+						for (var i=0; i<allCurrCheckers.length; i++){
+								//find original checker row/col before it was dragged
+								if (allCurrCheckers[i].row==oldRow &&
+										allCurrCheckers[i].col==oldCol){
+										originalChecker = allCurrCheckers[i];
+								}
+								//see if new position is occupied
+								if (allCurrCheckers[i].row==newRow &&
+										allCurrCheckers[i].col==newCol){
+										console.log(allCurrCheckers[i]);
+										//move checker back to its original position
+										checkerPiece.top = startPos.top;
+										checkerPiece.left = startPos.left;
+										return;
+								}
+						}
+						//move to new position
+						rules.makeMove(
+				}
+						
 
 function drawArrow(fromRow, fromCol, toRow, toCol){
 		console.log(fromRow, fromCol, toRow, toCol);
@@ -286,10 +328,11 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
 				}
 
 				function handleDragOver(e){
-						console.log("in handleDragOver");
-						e.target.style.top = rectX
-						e.target.style.left = rectY;
-//						console.log(e.target);
+						console.log(e.target.style.top);
+						e.target.style.top = 10;
+						e.target.style.left = 10;
+						checker11.style.top = 10;
+
 		//				e.dataTransfer.dropEffect = 'move'; //DataTransfer
 						return false;
 				}
@@ -314,10 +357,8 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
 				function handleDragEnd(e){
 						
 				}
-
-
-
 		});
+
 
 </script>
 
@@ -341,7 +382,8 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
         <td id="content">
 
 		<div id="allBoardPieces" style="position:absolute; width:400px; height:400px;">
-			<div class="checkerPiece" draggable="true"></div>
+
+		<div class="checkerPiece" style="position:absolute;" draggable="true"></div>
 					<canvas id="canvasBoard" style="border-style:solid; border-color:gray; border-width:2px;" width="400" height="400" >
 					</canvas>
 	
