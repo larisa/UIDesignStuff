@@ -89,6 +89,8 @@ var toggleTurn = function(color) {
         }
 				//draw the board we've created
 				draw_checkerboard();
+				board.prepareNewGame();
+				draw_all_pieces();
 
 	rules = new Rules(board);
 	
@@ -115,6 +117,8 @@ var toggleTurn = function(color) {
 
         
         $("#btnNewGame").click(function(evt) {
+						//clear arrows
+						document.getElementById("canvasStrokes").getContext("2d").clearRect(0, 0, 400, 400);
             board.prepareNewGame();
 						draw_checkerboard();
 						draw_all_pieces();
@@ -180,8 +184,6 @@ var toggleTurn = function(color) {
 								
 				});
 						
-        board.prepareNewGame();
-				draw_all_pieces();
 
 				
 //draw checkerboard

@@ -54,7 +54,9 @@
     var board;
     var rules;
     var whoseTurn = "black";	//black goes first
-    var ramifications = null; //undo cache starts blank
+    var ramifications = []; //undo cache starts blank
+    var toRedo = [];
+
 
     var directionOf = function(color) {
       if (color == "black") {
@@ -113,6 +115,8 @@ var toggleTurn = function(color) {
 
         
         $("#btnNewGame").click(function(evt) {
+						//clear arrows
+						document.getElementById("canvasStrokes").context.clearRect(0, 0, 400, 400);
             board.prepareNewGame();
 						draw_checkerboard();
 						draw_all_pieces();
@@ -123,14 +127,61 @@ var toggleTurn = function(color) {
           var playerColor = whoseTurn;
           var playerDirection = directionOf(playerColor);
           var result = rules.makeRandomMove(playerColor, playerDirection);
+
           if (result != null) {
             toggleTurn();
+						ramifications.push(result);
+							document.getElementById("btnUndo").disabled = false;
+						console.log(ramifications);
           }
 						draw_checkerboard();
 						draw_all_pieces();
 
         });
 
+        $("#btnUndo").click(function(evt) {
+						console.log(ramifications);
+						if (ramifications.length>0){
+								var lastMove = ramifications[ramifications.length-1];
+								var lastChecker = board.getCheckerAt(lastMove.to_row, lastMove.to_col);
+								board.moveTo(lastChecker, lastMove.from_row, lastMove.from_col);
+								draw_checkerboard();
+								draw_all_pieces();
+								
+								toRedo.push(lastMove);
+								document.getElementById("btnRedo").disabled = false;
+								ramifications.pop(lastMove);
+								if (ramifications.length==0){
+										document.getElementById("btnUndo").disabled = true;
+								}
+						}
+
+				});
+
+        $("#btnRedo").click(function(evt) {
+						console.log("toRedo ");
+						console.log(toRedo);
+						if (toRedo.length > 0){
+								var lastMove = toRedo[toRedo.length-1];
+								var lastChecker = board.getCheckerAt(lastMove.from_row, lastMove.from_col);
+								board.moveTo(lastChecker, lastMove.to_row, lastMove.to_col);
+								draw_checkerboard();
+								draw_all_pieces();
+
+								ramifications.push(lastMove);
+								toRedo.pop(lastMove);
+								if (toRedo.length==0){
+										document.getElementById("btnRedo").disabled = true;
+								}
+								if (ramifications.length==1){
+										document.getElementById("btnUndo").disabled = false;
+								}
+										
+						}
+
+								
+				});
+						
         board.prepareNewGame();
 				draw_all_pieces();
 
@@ -286,10 +337,13 @@ function setupNextPiece(currChecker, i){
 								console.log("oldPos: " + oldRow + "," + oldCol +
 														"newPos: " + newRow + "," + newCol)
 								if (whoseTurn=="black"){
-										ramifications = rules.makeMove(originalChecker, -1, -1, newRow, newCol);
+										ramifications.push(rules.makeMove(originalChecker, -1, -1, newRow, newCol));
+										document.getElementById("btnUndo").disabled = false;
 								}
 								else{
-										ramifications = rules.makeMove(originalChecker, 1, 1, newRow, newCol);
+										ramifications.push(rules.makeMove(originalChecker, 1, 1, newRow, newCol));
+										document.getElementById("btnUndo").disabled = false;
+
 								}
 								var finalCheckers = board.getAllCheckers();
 								draw_checkerboard();
@@ -416,8 +470,8 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
 		</td></tr>
               <tr><td><input id="btnNewGame" type="button" name="new" value="New Game"/></td></tr>
               <tr><td><input id="btnAutoMove" type="button" name="new" value="Auto Move"/></td></tr>
-				<tr><td><input id="btnUndo" type="button" name="new" value="Undo"/></td></tr>
-				<tr><td><input id="btnRedo" type="button" name="new" value="Redo"/></td></tr>
+				<tr><td><input id="btnUndo" type="button" name="new" value="Undo" disabled="true"/></td></tr>
+				<tr><td><input id="btnRedo" type="button" name="new" value="Redo" disabled="true"/></td></tr>
 							
 		
 
@@ -432,7 +486,7 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
 					<canvas id="canvasBoard" style="border-style:solid; border-color:gray; border-width:2px;" width="400" height="400" >
 					</canvas>
 	
-				<canvas id="canvasStrokes" width="400" height="400">
+		<canvas id="canvasStrokes" style="pointer-events: none;" width="400" height="400">
 						</canvas>
 
 				<canvas id="canvasAnimatePieces" width="400" height="400">
