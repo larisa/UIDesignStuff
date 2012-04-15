@@ -101,7 +101,7 @@ var toggleTurn = function(color) {
     	},true);
 
     	board.addEventListener('move',function (e) {
-					console.log(e);
+//					console.log(e);
 					var move = e.details;
 					drawArrow(move.fromRow, move.fromCol, move.toRow, move.toCol);
     	},true);
@@ -134,7 +134,7 @@ var toggleTurn = function(color) {
             toggleTurn();
 						ramifications.push(result);
 							document.getElementById("btnUndo").disabled = false;
-						console.log(ramifications);
+//						console.log(ramifications);
           }
 						draw_checkerboard();
 						draw_all_pieces();
@@ -142,7 +142,7 @@ var toggleTurn = function(color) {
         });
 
         $("#btnUndo").click(function(evt) {
-						console.log(ramifications);
+	//					console.loXxg(ramifications);
 						if (ramifications.length>0){
 								var lastMove = ramifications[ramifications.length-1];
 								var lastChecker = board.getCheckerAt(lastMove.to_row, lastMove.to_col);
@@ -161,8 +161,8 @@ var toggleTurn = function(color) {
 				});
 
         $("#btnRedo").click(function(evt) {
-						console.log("toRedo ");
-						console.log(toRedo);
+//						console.log("toRedo ");
+	//					console.log(toRedo);
 						if (toRedo.length > 0){
 								var lastMove = toRedo[toRedo.length-1];
 								var lastChecker = board.getCheckerAt(lastMove.from_row, lastMove.from_col);
@@ -217,7 +217,7 @@ function draw_checkerboard(){
 //draw board's entire current state 
 //assign id to each checker image. 
 function draw_all_pieces(){
-		console.log("in draw_all_pieces");
+//		console.log("in draw_all_pieces");
 		 var canvas = document.getElementById("canvasBoard");
 
 		 if (canvas && canvas.getContext){
@@ -271,6 +271,7 @@ function setupNextPiece(currChecker, i){
 		//position
 		nextPieceImg.style.position = "absolute";
 		nextPieceImg.style.height = box_dim;
+		$(nextPieceImg).width(box_dim);
 		nextPieceImg.style.width = box_dim;
 
 		nextPieceImg.style.top = (box_dim * currChecker.row) + "px";
@@ -283,14 +284,14 @@ function setupNextPiece(currChecker, i){
 				appendTo: "#canvasBoard",
 				//save the startPos of the checker, in case of an "invalid" drag
 				start: function(event, nextPieceImg){
-						console.log("e" + event);
+//						console.log("e" + event);
 						startPos = $(this).position();
-						console.log(startPos);
+	//					console.log(startPos);
 				},
 				
 				stop: function(event, nextPieceImg){
 						stopPos = $(this).position();
-						console.log(stopPos);
+		//				console.log(stopPos);
 						dragChecker(nextPieceImg, startPos, stopPos);
 				}
 		});
@@ -302,11 +303,11 @@ function setupNextPiece(currChecker, i){
 						
 						var oldRow = Math.round(startPos.top/box_dim);
 						var oldCol = Math.round(startPos.left/box_dim);
-						console.log("oldRow and oldCol" + oldRow + "," + oldCol);
-						console.log("pre-floor: " + stopPos.top/box_dim + "," + stopPos.left/box_dim);
+//						console.log("oldRow and oldCol" + oldRow + "," + oldCol);
+	//					console.log("pre-floor: " + stopPos.top/box_dim + "," + stopPos.left/box_dim);
 						var newRow = Math.round(stopPos.top/box_dim);
 						var newCol = Math.round(stopPos.left/box_dim);
-						console.log("newRow and newCol" + newRow + "," + newCol);
+		//				console.log("newRow and newCol" + newRow + "," + newCol);
 						
 						var originalChecker;
 						var allCurrCheckers = board.getAllCheckers();
@@ -331,11 +332,11 @@ function setupNextPiece(currChecker, i){
 
 						if ((whoseTurn=="black" && originalChecker.color=="black") ||
 								(whoseTurn=="red" && originalChecker.color=="red")){
-								console.log("making a move");
+//								console.log("making a move");
 								var originalCheckers = board.getAllCheckers();
 								
-								console.log("oldPos: " + oldRow + "," + oldCol +
-														"newPos: " + newRow + "," + newCol)
+	//							console.log("oldPos: " + oldRow + "," + oldCol +
+		//												"newPos: " + newRow + "," + newCol)
 								if (whoseTurn=="black"){
 										ramifications.push(rules.makeMove(originalChecker, -1, -1, newRow, newCol));
 										document.getElementById("btnUndo").disabled = false;
@@ -351,19 +352,19 @@ function setupNextPiece(currChecker, i){
 
 								
 								if (originalChecker.row==newRow && originalChecker.col==newCol){
-										console.log("Turn Done");
+//										console.log("Turn Done");
 										//next player's turn
 										toggleTurn();
 								}
 
 						}
 						else{
-								console.log("not your turn");
+	//							console.log("not your turn");
 								draw_checkerboard();
 								draw_all_pieces();
 
-								$(checkerPiece).position.left = startPos.left;
-								$(checkerPiece).position.top = startPos.top;
+//								$(checkerPiece).position.left = startPos.left;
+	//							$(checkerPiece).position.top = startPos.top;
 								//don't move, put the checker back!
 						}
 
@@ -371,7 +372,7 @@ function setupNextPiece(currChecker, i){
 						
 
 function drawArrow(fromRow, fromCol, toRow, toCol){
-		console.log(fromRow, fromCol, toRow, toCol);
+//		console.log(fromRow, fromCol, toRow, toCol);
 		var offset = -25;
 		 var canvas = document.getElementById("canvasStrokes");
 
@@ -415,43 +416,6 @@ function drawArrow(fromRow, fromCol, toRow, toCol){
 
 
 
-//mouse input handling
-				function handleDragStart(e){
-						dragSrcEl = this;
-						e.dataTransfer.effectAllowed = 'move';
-						e.dataTransfer.setData('text/html', this.innerHTML);
-				}
-
-				function handleDragOver(e){
-						console.log(e.target.style.top);
-						e.target.style.top = 10;
-						e.target.style.left = 10;
-						checker11.style.top = 10;
-
-		//				e.dataTransfer.dropEffect = 'move'; //DataTransfer
-						return false;
-				}
-
-				function handleDragEnter(e){
-						console.log(e.target);
-//						this.classList.add('over');
-				}
-				
-				function handleDragLeave(e){
-	//					this.classList.remove('over'
-				}
-
-				function handleDrop(e){
-	//					console.log(e.target);
-						if (dragSrcEl != this){ //dropping the same place we're dragging
-						}
-						
-
-				}
-				
-				function handleDragEnd(e){
-						
-				}
 		});
 
 
